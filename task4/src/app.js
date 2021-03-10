@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
             msg: req.query.msg
         }
         myMethods.addUser(user)
-        return res.redirect('/')
+        return res.redirect('/showAll')
     }
     res.render('index.hbs')
 })
@@ -46,9 +46,10 @@ app.get('/deleteUser/:id', (req,res)=>{
 app.get('/edituser/:id/', (req,res)=>{
     
     user = req.params.id
-        myMethods.editUser(user,req.query.name, req.query.email, req.query.phone, req.query.msg)
+    
+    myMethods.editUser(user,req.query.name, req.query.email, req.query.phone, req.query.msg)
 
-        
+     res.redirect('/showAll')
     res.render('edituser.hbs')
 })
 
