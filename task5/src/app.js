@@ -11,11 +11,11 @@ app.set('view engine', 'hbs')
 const publicDIr = path.join(__dirname, '../publicStatic')
 app.use(express.static(publicDIr))
 const viewsDir = path.join(__dirname, '../FrontEnd/views')
-app.set('views', viewsDir)
+app.set('views', viewsDir) 
 const partials = path.join(__dirname, '../FrontEnd/partials')
 hbs.registerPartials(partials)
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => { 
     if (req.query.name && req.query.phone) {
         user = {
             name: req.query.name,
@@ -33,11 +33,11 @@ myMethods.showAll((err,data)=>{res.render('showAll',{data})})
 })
 app.get('/showAll/:id', (req, res) => {
     id=req.params.id
-    myMethods.oneUser(id, (err, data)=>{
+    myMethods.oneUser(id, (err, data)=>{ 
         res.render('single',{data})
     })
 })
-
+ 
 app.get('/deleteUser/:id', (req,res)=>{
     user = req.params.id
     myMethods.deleteUser(user)
@@ -46,10 +46,12 @@ app.get('/deleteUser/:id', (req,res)=>{
 app.get('/edituser/:id/', (req,res)=>{
     
     user = req.params.id
-    
+    if (req.query.name && req.query.phone) {
     myMethods.editUser(user,req.query.name, req.query.email, req.query.phone, req.query.msg)
 
      res.redirect('/showAll')
+    }
+
     res.render('edituser.hbs')
 })
 
