@@ -1,0 +1,23 @@
+{{>header}}
+{{>navbar}}
+<section class="container my-3">
+    <h1 class="text-center">All Customers</h1>
+    <div class="row">
+        {{#each  Customers}}
+        <div class="col-4">
+            <div class="m-2 p-2 border border-primary border-2">
+                <h3>{{this.title}}</h3>
+                <p>{{this.body}}</p>
+                <a href="/allCustomers/{{@index}}" class="btn btn-danger">Delete Customer</a>
+            </div>
+        </div>
+        {{else}}
+        <div class="alert alert-danger">
+            No Customers Found
+        </div>
+        {{/each}}
+    </div>
+  
+
+ 
+{{>footer}}

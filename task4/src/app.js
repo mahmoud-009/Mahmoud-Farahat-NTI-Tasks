@@ -1,58 +1,43 @@
-const express = require('express')
-const path = require('path')
-const hbs = require('hbs')
+const express = require("express");
+const hbs = require("hbs");
+const path = require("path");
 
-const myMethods = require('./utils/functions')
-const app = express()
-const PORT = process.env.PORT
+const PORT = 3000;
 
-app.set('view engine', 'hbs')
+const app = express();
 
-const publicDIr = path.join(__dirname, '../publicStatic')
-app.use(express.static(publicDIr))
-const viewsDir = path.join(__dirname, '../FrontEnd/views')
-app.set('views', viewsDir)
-const partials = path.join(__dirname, '../FrontEnd/partials')
-hbs.registerPartials(partials)
+app.set("view engine", "hbs");
 
-app.get('/', (req, res) => {
-    if (req.query.name && req.query.phone) {
-        user = {
-            name: req.query.name,
-            email: req.query.email,
-            phone: req.query.phone,
-            msg: req.query.msg
-        }
-        myMethods.addUser(user)
-        return res.redirect('/showAll')
+const publicDir = path.join(__dirname, "../public");
+app.use(express.static(publicDir));
+const viewsDir = path.join(__dirname, "../frontend/views");
+app.set("views", viewsDir);
+const partialsDir = path.join(__dirname, "../frontend/partials");
+hbs.registerPartials(partialsDir);
+
+const  Customers = [];
+
+app.get("/addCustomer", (req, res) => {
+    if (req.query.title && req.query.body) {
+        Customer = {
+            title: req.query.title,
+            body: req.query.body,
+        };
+        Customers.push( Customer);
+        res.redirect("/allCustomers");
     }
-    res.render('index.hbs')
-})
-app.get('/showAll', (req, res) => {
-myMethods.showAll((err,data)=>{res.render('showAll',{data})})
-})
-app.get('/showAll/:id', (req, res) => {
-    id=req.params.id
-    myMethods.oneUser(id, (err, data)=>{
-        res.render('single',{data})
-    })
-})
-
-app.get('/deleteUser/:id', (req,res)=>{
-    user = req.params.id
-    myMethods.deleteUser(user)
-    res.redirect('/showAll')
-})
-app.get('/edituser/:id/', (req,res)=>{
-    
-    user = req.params.id
-    
-    myMethods.editUser(user,req.query.name, req.query.email, req.query.phone, req.query.msg)
-
-     res.redirect('/showAll')
-    res.render('edituser.hbs')
-})
-
-
-
-app.listen(PORT)
+    res.render("addCustomer");
+});
+app.get("/allCustomers", (req, res) => {
+    res.render("allCustomers", { 
+        pageName: "All Customers",
+        Customers:  Customers,
+    });
+});
+app.get("/allCustomers/:id", (req, res) => {
+    const id = req.params.id; 
+    console.log(id);
+    Customers.splice(id, 1);
+    res.redirect("/allCustomers");
+});
+app.listen(PORT);
