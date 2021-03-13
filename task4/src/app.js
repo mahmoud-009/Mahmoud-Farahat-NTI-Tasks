@@ -16,7 +16,10 @@ const partialsDir = path.join(__dirname, "../frontend/partials");
 hbs.registerPartials(partialsDir);
 
 const  Customers = [];
-
+app.get("/", (req, res) => {
+   
+    res.render("home");
+});
 app.get("/addCustomer", (req, res) => {
     if (req.query.title && req.query.body) {
         Customer = {
@@ -36,7 +39,7 @@ app.get("/allCustomers", (req, res) => {
 });
 app.get("/allCustomers/:id", (req, res) => {
     const id = req.params.id; 
-    console.log(id);
+    console.log(id); 
     Customers.splice(id, 1);
     res.redirect("/allCustomers");
 });
